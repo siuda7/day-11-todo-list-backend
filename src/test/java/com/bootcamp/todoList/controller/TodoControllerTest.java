@@ -127,5 +127,21 @@ public class TodoControllerTest {
         assertThat(todos.get(0).getDone()).isEqualTo(updatedDone);
     }
 
+    @Test
+    void should_deleted_todo_when_delete_given_delete_todo_id() throws Exception {
+
+        //Given
+        Integer deletedId = 1;
+
+        //When
+        final var result =
+                client.perform(MockMvcRequestBuilders.delete("/todos/" + deletedId)).andReturn();
+        //Then
+        assertThat(result.getResponse().getStatus()).isEqualTo(HttpStatus.NO_CONTENT.value());
+        assertThat(todoRepository.findAll()).hasSize(2);
+
+
+    }
+
 
 }

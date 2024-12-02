@@ -44,6 +44,7 @@ public class TodoServiceTest {
         TodoService todoService = buildService();
         Todo newTodo = new Todo(1, "Task new Todo", false);
 
+
         //When
         todoService.create(newTodo);
 

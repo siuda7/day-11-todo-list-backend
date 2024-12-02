@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 @SpringBootTest
 @AutoConfigureJsonTesters
@@ -97,6 +98,29 @@ public class TodoControllerTest {
         assertThat(todos.get(3).getText()).isEqualTo(text);
         assertThat(todos.get(3).getDone()).isEqualTo(done);
     
+    }
+
+    @Test
+    void should_update_todo_when_update_given_update_todo() throws Exception {
+
+        //Given
+        Integer updatedId = 1;
+        String updatedText = "New Updated text";
+        Boolean updatedDone = true;
+
+        String updateTodoRequestBody = String.format("{\"text\": \"%s\",  \"done\": \"%s\"}", updatedText, updatedDone);
+
+        //When
+        //Then
+        client.perform(MockMvcRequestBuilders.put("/todos/" + updatedId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(updateTodoRequestBody))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNotEmpty())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.text").value(updatedText))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.done").value(updatedDone));
+
     }
 
 

@@ -28,4 +28,8 @@ public class TodoService {
         final Todo updateTodo = todoRepository.findById(id).orElse(null);
         return updateTodo == null ? null : todoRepository.save(todo);
     }
+
+    public Todo getTodoById(Integer id) {
+        return todoRepository.findById(id).orElse(null);
+    }
 }

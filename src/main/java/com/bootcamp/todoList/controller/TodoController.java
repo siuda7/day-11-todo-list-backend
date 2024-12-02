@@ -33,4 +33,9 @@ public class TodoController {
     public Todo updateTodo(@PathVariable Integer id, @RequestBody Todo company) {
         return todoService.update(id, company);
     }
+
+    @GetMapping("/{id}")
+    public Todo getTodoById(@PathVariable Integer id) {
+        return todoService.getTodoById(id);
+    }
 }

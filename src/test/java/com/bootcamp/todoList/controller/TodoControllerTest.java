@@ -45,9 +45,9 @@ public class TodoControllerTest {
         todoRepository.deleteAll();
         todoRepository.flush();
 
-        todoRepository.save(new Todo(null, "Test 1", false));
-        todoRepository.save(new Todo(null, "Test 2", false));
-        todoRepository.save(new Todo(null, "Test 3", false));
+        todoRepository.save(new Todo(null,"Test 1", false));
+        todoRepository.save(new Todo( null,"Test 2", false));
+        todoRepository.save(new Todo( null,"Test 3", false));
     }
 
     @Test
@@ -108,7 +108,7 @@ public class TodoControllerTest {
         String updatedText = "New Updated text";
         Boolean updatedDone = true;
 
-        String updateTodoRequestBody = String.format("{\"text\": \"%s\",  \"done\": \"%s\"}", updatedText, updatedDone);
+        String updateTodoRequestBody = String.format("{\"id\": \"%s\", \"text\": \"%s\",  \"done\": \"%s\"}", updatedId, updatedText, updatedDone);
 
         //When
         //Then
@@ -121,6 +121,10 @@ public class TodoControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.text").value(updatedText))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.done").value(updatedDone));
 
+        List<Todo> todos = todoRepository.findAll();
+        assertThat(todos).hasSize(3);
+        assertThat(todos.get(0).getText()).isEqualTo(updatedText);
+        assertThat(todos.get(0).getDone()).isEqualTo(updatedDone);
     }
 
 

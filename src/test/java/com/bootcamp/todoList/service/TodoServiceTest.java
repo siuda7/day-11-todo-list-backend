@@ -8,8 +8,7 @@ import org.mockito.Mock;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class TodoServiceTest {
 
@@ -36,5 +35,20 @@ public class TodoServiceTest {
         assertEquals(expectedTodoList.get(0).getId(), todoList.get(0).getId());
         assertEquals(expectedTodoList.get(0).getText(), todoList.get(0).getText());
         assertEquals(expectedTodoList.get(0).getDone(), todoList.get(0).getDone());
+    }
+
+    @Test
+    void should_create_todo_when_create_given_todo() {
+
+        //Given
+        TodoService todoService = buildService();
+        Todo newTodo = new Todo(1, "Task new Todo", false);
+
+        //When
+        todoService.create(newTodo);
+
+        //Then
+        verify(mockTodoRepository).save(newTodo);
+
     }
 }

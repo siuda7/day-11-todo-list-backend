@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
 
@@ -35,6 +36,8 @@ public class TodoControllerTest {
 
     @Autowired
     private JacksonTester<List<Todo>> todoListJacksonTester;
+
+    private JacksonTester<Todo> todoJacksonTester;
 
     @BeforeEach
     void setUp() {
@@ -63,6 +66,36 @@ public class TodoControllerTest {
         assertThat(fetchedTodos)
                 .usingRecursiveFieldByFieldElementComparator()
                 .isEqualTo(expectedTodoList);
+    
+    }
+    
+    @Test
+    void should_return_new_todo_when_create_given_new_todo() throws Exception {
+    
+        //Given
+        String text = "Integration Test 1";
+        Boolean done = false;
+
+        String givenNewTodo = String.format(
+                "{\"text\": \"%s\", \"done\": \"%s\"}",
+                text,
+                done
+        );
+        
+        //When
+        //Then
+        client.perform(MockMvcRequestBuilders.post("/todos")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(givenNewTodo)
+            )
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.text").value(text))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.done").value(done));
+
+        List<Todo> todos = todoRepository.findAll();
+        assertThat(todos).hasSize(4);
+        assertThat(todos.get(3).getText()).isEqualTo(text);
+        assertThat(todos.get(3).getDone()).isEqualTo(done);
     
     }
 

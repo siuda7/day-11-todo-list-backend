@@ -46,6 +46,11 @@ public class Todo {
         this.done = done;
     }
 
+    public Todo(String text, Boolean done) {
+        this.text = text;
+        this.done = done;
+    }
+
     public Todo() {
     }
 }

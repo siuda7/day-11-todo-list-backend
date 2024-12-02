@@ -39,4 +39,10 @@ public class Todo {
     public void setDone(Boolean done) {
         this.done = done;
     }
+
+    public Todo(Integer id, String text, Boolean done) {
+        this.id = id;
+        this.text = text;
+        this.done = done;
+    }
 }
